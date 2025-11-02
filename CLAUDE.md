@@ -30,14 +30,20 @@ This is a Flutter web application for the Digimon Card Game, providing a compreh
 - **Provider pattern** with multiple specialized providers:
   - `UserProvider` - Authentication and user state
   - `DeckProvider` - Deck building and management
-  - `CollectProvider` - Card collection tracking (proxy provider dependent on UserProvider)
+  - `CollectProvider` - Card collection tracking (ChangeNotifierProxyProvider dependent on UserProvider)
   - `LimitProvider` - Format limitations and restrictions
-  - `HeaderToggleProvider`, `DeckSortProvider`, `TextSimplifyProvider`, etc.
+  - `LocaleProvider` - Language/locale management
+  - `NoteProvider` - Notes and annotations
+  - `FormatDeckCountProvider` - Deck count tracking by format
+  - `HeaderToggleProvider`, `DeckSortProvider`, `TextSimplifyProvider` - UI state
+- **Important**: `CollectProvider` auto-initializes when user logs in and clears on logout via proxy provider pattern
 
 ### Routing
 - **AutoRoute** for declarative routing with nested routes
-- Route guards for deck-specific pages (`DeckGuard`)
-- Main shell page with tab-based navigation
+- Route guards for deck-specific pages (`DeckGuard` - redirects to deck-builder if required args missing)
+- Main shell page (`MainRoute`) with nested child routes for tab-based navigation
+- Standalone routes: `/deck-image`, `/game`, `/login/kakao`, `/logout/kakao`, `/qr`
+- Nested routes under `/`: `deck-builder`, `deck-list`, `collect`, `info/*`
 
 ### Data Layer
 - **Dio** HTTP client with centralized auth error handling
@@ -46,9 +52,10 @@ This is a Flutter web application for the Digimon Card Game, providing a compreh
 - Model classes with JSON serialization
 
 ### UI Architecture
-- **Responsive design** with defined breakpoints (mobile/tablet/desktop/4K)
-- Material 3 design system with custom theme
-- Service layer for UI concerns (dialog, orientation, color, size)
+- **Responsive design** with breakpoints: 0-480 (MOBILE), 481-800 (TABLET), 801-1920 (DESKTOP), 1920+ (4K)
+- Material 3 design system with custom blue theme (primary: #2563EB)
+- Custom fonts: JalnanGothic (primary), MPLUSC (secondary)
+- Service layer for UI concerns (DialogService, OrientationService, ColorService, SizeService)
 - Widget composition with specialized directories
 
 ## Key Directories
@@ -70,15 +77,26 @@ This is a Flutter web application for the Digimon Card Game, providing a compreh
 
 ## Technical Details
 
+### App Initialization Flow
+1. `CardDataService().initialize()` - Load card data from JSON assets before app starts
+2. All providers initialized via MultiProvider in main.dart
+3. OAuth message listeners registered for login/logout window communication
+4. `DioClient` auth error handler connected to `UserProvider.unAuth()`
+5. `LimitProvider` initialized from remote data
+6. `UserSettingService` loads and applies saved user preferences
+
 ### Authentication
-- OAuth-based login system with window message listeners
-- User session persistence and auth error handling
-- Kakao login integration
+- OAuth-based login system with window message listeners (`html.window.addEventListener`)
+- Login/logout handled via popup windows that post messages back to main window
+- User session persistence and auth error handling via DioClient callback
+- Kakao OAuth integration with dedicated login/logout routes
+- `UserProvider.unAuth()` triggered on 401/403 responses from API
 
 ### Data Management
-- Card data initialization on app startup (`CardDataService`)
-- Local storage for user settings and collection data
-- Real-time updates between providers
+- Card data loaded synchronously on app startup (`CardDataService`)
+- User settings persisted via `UserSettingService` (locale, deck sort, text simplify, etc.)
+- Collection data synced with backend when logged in
+- Real-time updates between providers via ChangeNotifierProxyProvider pattern
 
 ### Code Generation
 - Auto-generated routes (`router.gr.dart`)
