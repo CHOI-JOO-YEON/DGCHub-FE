@@ -168,6 +168,7 @@ class _DeckBuilderViewState extends State<DeckBuilderView> {
     isInit = false;
     
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         // 상단 메뉴 영역 - 충분한 공간 확보
         Padding(
@@ -323,22 +324,17 @@ class _DeckBuilderViewState extends State<DeckBuilderView> {
         NotificationListener<DeckDescriptionChangedNotification>(
           onNotification: (notification) {
             // 알림을 처리하고 상위 위젯으로 전파하지 않음
-            return true; 
+            return true;
           },
-          child: Expanded(
-            flex: _isEditorExpanded 
-              ? (isSmallHeight ? 3 : 4)  // 확장 시: 작은 화면에서는 3, 일반 화면에서는 4
-              : 1,                       // 축소 시: 모든 화면에서 1
-            child: DeckEditorWidget(
-              deck: widget.deck,
-              onEditorChanged: () {
-                setState(() {});
-                widget.deck.saveMapToLocalStorage();
-              },
-              searchWithParameter: widget.searchWithParameter,
-              isExpanded: _isEditorExpanded,
-              toggleExpanded: toggleEditorExpanded,
-            ),
+          child: DeckEditorWidget(
+            deck: widget.deck,
+            onEditorChanged: () {
+              setState(() {});
+              widget.deck.saveMapToLocalStorage();
+            },
+            searchWithParameter: widget.searchWithParameter,
+            isExpanded: _isEditorExpanded,
+            toggleExpanded: toggleEditorExpanded,
           ),
         ),
         // 메인 섹션 헤더

@@ -707,41 +707,51 @@ class _DeckBuilderPageState extends State<DeckBuilderPage> {
           children: [
             Expanded(
               flex: deckFlex,
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      Colors.white,
-                      const Color(0xFFF8FAFC),
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(isMobileDesktop ? 16 : 20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.08),
-                      blurRadius: isMobileDesktop ? 12 : 16,
-                      offset: const Offset(0, 4),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Colors.white,
+                          const Color(0xFFF8FAFC),
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(isMobileDesktop ? 16 : 20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.08),
+                          blurRadius: isMobileDesktop ? 12 : 16,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                      border: Border.all(
+                        color: Colors.grey.withOpacity(0.1),
+                        width: 1,
+                      ),
                     ),
-                  ],
-                  border: Border.all(
-                    color: Colors.grey.withOpacity(0.1),
-                    width: 1,
-                  ),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(isMobileDesktop ? 16 : 20),
-                  child: SingleChildScrollView(
-                    child: deck != null ? DeckBuilderView(
-                      deck: deck!,
-                      cardPressEvent: removeCardByDeck,
-                      import: deckUpdate,
-                      searchWithParameter: searchWithParameter,
-                      cardOverlayService: _cardOverlayService,
-                    ) : Container(),
-                  ),
-                ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(isMobileDesktop ? 16 : 20),
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxHeight: constraints.maxHeight,
+                        ),
+                        child: SingleChildScrollView(
+                          physics: const ClampingScrollPhysics(),
+                          child: deck != null ? DeckBuilderView(
+                            deck: deck!,
+                            cardPressEvent: removeCardByDeck,
+                            import: deckUpdate,
+                            searchWithParameter: searchWithParameter,
+                            cardOverlayService: _cardOverlayService,
+                          ) : Container(),
+                        ),
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
             SizedBox(width: spacing),
