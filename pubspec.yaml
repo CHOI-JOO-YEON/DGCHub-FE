@@ -41,10 +41,10 @@ dependencies:
   provider: ^6.1.1
   uni_links: ^0.5.1
   url_strategy: ^0.3.0
-  json_serializable: ^6.7.1
+  json_serializable: ^6.11.0
   build_runner: ^2.4.7
-  json_annotation: ^4.8.1
-#  auto_route: ^7.8.4
+  json_annotation: ^4.9.0
+  auto_route: ^10.2.3
 #  flutter_image_compress: ^2.1.0
 #  http: ^1.2.0
   stroke_text: ^1.0.0
@@ -75,8 +75,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  auto_route_generator: ^9.3.1
-  build_runner: ^2.4.8
+  auto_route_generator: ^10.2.6
+  build_runner: ^2.4.14
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

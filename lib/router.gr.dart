@@ -18,14 +18,14 @@ class CollectRoute extends PageRouteInfo<CollectRouteArgs> {
     String? searchParameterString,
     List<PageRouteInfo>? children,
   }) : super(
-         CollectRoute.name,
-         args: CollectRouteArgs(
-           key: key,
-           searchParameterString: searchParameterString,
-         ),
-         rawQueryParams: {'searchParameter': searchParameterString},
-         initialChildren: children,
-       );
+          CollectRoute.name,
+          args: CollectRouteArgs(
+            key: key,
+            searchParameterString: searchParameterString,
+          ),
+          rawQueryParams: {'searchParameter': searchParameterString},
+          initialChildren: children,
+        );
 
   static const String name = 'CollectRoute';
 
@@ -34,10 +34,9 @@ class CollectRoute extends PageRouteInfo<CollectRouteArgs> {
     builder: (data) {
       final queryParams = data.queryParams;
       final args = data.argsAs<CollectRouteArgs>(
-        orElse:
-            () => CollectRouteArgs(
-              searchParameterString: queryParams.optString('searchParameter'),
-            ),
+        orElse: () => CollectRouteArgs(
+          searchParameterString: queryParams.optString('searchParameter'),
+        ),
       );
       return CollectPage(
         key: args.key,
@@ -58,6 +57,17 @@ class CollectRouteArgs {
   String toString() {
     return 'CollectRouteArgs{key: $key, searchParameterString: $searchParameterString}';
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! CollectRouteArgs) return false;
+    return key == other.key &&
+        searchParameterString == other.searchParameterString;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ searchParameterString.hashCode;
 }
 
 /// generated route for
@@ -70,16 +80,16 @@ class DeckBuilderRoute extends PageRouteInfo<DeckBuilderRouteArgs> {
     DeckView? deckView,
     List<PageRouteInfo>? children,
   }) : super(
-         DeckBuilderRoute.name,
-         args: DeckBuilderRouteArgs(
-           key: key,
-           deck: deck,
-           searchParameterString: searchParameterString,
-           deckView: deckView,
-         ),
-         rawQueryParams: {'searchParameter': searchParameterString},
-         initialChildren: children,
-       );
+          DeckBuilderRoute.name,
+          args: DeckBuilderRouteArgs(
+            key: key,
+            deck: deck,
+            searchParameterString: searchParameterString,
+            deckView: deckView,
+          ),
+          rawQueryParams: {'searchParameter': searchParameterString},
+          initialChildren: children,
+        );
 
   static const String name = 'DeckBuilderRoute';
 
@@ -88,10 +98,9 @@ class DeckBuilderRoute extends PageRouteInfo<DeckBuilderRouteArgs> {
     builder: (data) {
       final queryParams = data.queryParams;
       final args = data.argsAs<DeckBuilderRouteArgs>(
-        orElse:
-            () => DeckBuilderRouteArgs(
-              searchParameterString: queryParams.optString('searchParameter'),
-            ),
+        orElse: () => DeckBuilderRouteArgs(
+          searchParameterString: queryParams.optString('searchParameter'),
+        ),
       );
       return DeckBuilderPage(
         key: args.key,
@@ -123,6 +132,23 @@ class DeckBuilderRouteArgs {
   String toString() {
     return 'DeckBuilderRouteArgs{key: $key, deck: $deck, searchParameterString: $searchParameterString, deckView: $deckView}';
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! DeckBuilderRouteArgs) return false;
+    return key == other.key &&
+        deck == other.deck &&
+        searchParameterString == other.searchParameterString &&
+        deckView == other.deckView;
+  }
+
+  @override
+  int get hashCode =>
+      key.hashCode ^
+      deck.hashCode ^
+      searchParameterString.hashCode ^
+      deckView.hashCode;
 }
 
 /// generated route for
@@ -133,10 +159,10 @@ class DeckImageRoute extends PageRouteInfo<DeckImageRouteArgs> {
     required DeckBuild deck,
     List<PageRouteInfo>? children,
   }) : super(
-         DeckImageRoute.name,
-         args: DeckImageRouteArgs(key: key, deck: deck),
-         initialChildren: children,
-       );
+          DeckImageRoute.name,
+          args: DeckImageRouteArgs(key: key, deck: deck),
+          initialChildren: children,
+        );
 
   static const String name = 'DeckImageRoute';
 
@@ -160,6 +186,16 @@ class DeckImageRouteArgs {
   String toString() {
     return 'DeckImageRouteArgs{key: $key, deck: $deck}';
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! DeckImageRouteArgs) return false;
+    return key == other.key && deck == other.deck;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ deck.hashCode;
 }
 
 /// generated route for
@@ -170,14 +206,14 @@ class DeckListRoute extends PageRouteInfo<DeckListRouteArgs> {
     String? searchParameterString,
     List<PageRouteInfo>? children,
   }) : super(
-         DeckListRoute.name,
-         args: DeckListRouteArgs(
-           key: key,
-           searchParameterString: searchParameterString,
-         ),
-         rawQueryParams: {'searchParameter': searchParameterString},
-         initialChildren: children,
-       );
+          DeckListRoute.name,
+          args: DeckListRouteArgs(
+            key: key,
+            searchParameterString: searchParameterString,
+          ),
+          rawQueryParams: {'searchParameter': searchParameterString},
+          initialChildren: children,
+        );
 
   static const String name = 'DeckListRoute';
 
@@ -186,10 +222,9 @@ class DeckListRoute extends PageRouteInfo<DeckListRouteArgs> {
     builder: (data) {
       final queryParams = data.queryParams;
       final args = data.argsAs<DeckListRouteArgs>(
-        orElse:
-            () => DeckListRouteArgs(
-              searchParameterString: queryParams.optString('searchParameter'),
-            ),
+        orElse: () => DeckListRouteArgs(
+          searchParameterString: queryParams.optString('searchParameter'),
+        ),
       );
       return DeckListPage(
         key: args.key,
@@ -210,6 +245,17 @@ class DeckListRouteArgs {
   String toString() {
     return 'DeckListRouteArgs{key: $key, searchParameterString: $searchParameterString}';
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! DeckListRouteArgs) return false;
+    return key == other.key &&
+        searchParameterString == other.searchParameterString;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ searchParameterString.hashCode;
 }
 
 /// generated route for
@@ -220,10 +266,10 @@ class GamePlayGroundRoute extends PageRouteInfo<GamePlayGroundRouteArgs> {
     required DeckBuild deckBuild,
     List<PageRouteInfo>? children,
   }) : super(
-         GamePlayGroundRoute.name,
-         args: GamePlayGroundRouteArgs(key: key, deckBuild: deckBuild),
-         initialChildren: children,
-       );
+          GamePlayGroundRoute.name,
+          args: GamePlayGroundRouteArgs(key: key, deckBuild: deckBuild),
+          initialChildren: children,
+        );
 
   static const String name = 'GamePlayGroundRoute';
 
@@ -247,13 +293,23 @@ class GamePlayGroundRouteArgs {
   String toString() {
     return 'GamePlayGroundRouteArgs{key: $key, deckBuild: $deckBuild}';
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! GamePlayGroundRouteArgs) return false;
+    return key == other.key && deckBuild == other.deckBuild;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ deckBuild.hashCode;
 }
 
 /// generated route for
 /// [InfoPage]
 class InfoRoute extends PageRouteInfo<void> {
   const InfoRoute({List<PageRouteInfo>? children})
-    : super(InfoRoute.name, initialChildren: children);
+      : super(InfoRoute.name, initialChildren: children);
 
   static const String name = 'InfoRoute';
 
@@ -269,7 +325,7 @@ class InfoRoute extends PageRouteInfo<void> {
 /// [KakaoLoginPage]
 class KakaoLoginRoute extends PageRouteInfo<void> {
   const KakaoLoginRoute({List<PageRouteInfo>? children})
-    : super(KakaoLoginRoute.name, initialChildren: children);
+      : super(KakaoLoginRoute.name, initialChildren: children);
 
   static const String name = 'KakaoLoginRoute';
 
@@ -285,7 +341,7 @@ class KakaoLoginRoute extends PageRouteInfo<void> {
 /// [KakaoLogoutPage]
 class KakaoLogoutRoute extends PageRouteInfo<void> {
   const KakaoLogoutRoute({List<PageRouteInfo>? children})
-    : super(KakaoLogoutRoute.name, initialChildren: children);
+      : super(KakaoLogoutRoute.name, initialChildren: children);
 
   static const String name = 'KakaoLogoutRoute';
 
@@ -301,7 +357,7 @@ class KakaoLogoutRoute extends PageRouteInfo<void> {
 /// [KeywordInfoPage]
 class KeywordInfoRoute extends PageRouteInfo<void> {
   const KeywordInfoRoute({List<PageRouteInfo>? children})
-    : super(KeywordInfoRoute.name, initialChildren: children);
+      : super(KeywordInfoRoute.name, initialChildren: children);
 
   static const String name = 'KeywordInfoRoute';
 
@@ -317,7 +373,7 @@ class KeywordInfoRoute extends PageRouteInfo<void> {
 /// [LimitInfoPage]
 class LimitInfoRoute extends PageRouteInfo<void> {
   const LimitInfoRoute({List<PageRouteInfo>? children})
-    : super(LimitInfoRoute.name, initialChildren: children);
+      : super(LimitInfoRoute.name, initialChildren: children);
 
   static const String name = 'LimitInfoRoute';
 
@@ -333,7 +389,7 @@ class LimitInfoRoute extends PageRouteInfo<void> {
 /// [MainPage]
 class MainRoute extends PageRouteInfo<void> {
   const MainRoute({List<PageRouteInfo>? children})
-    : super(MainRoute.name, initialChildren: children);
+      : super(MainRoute.name, initialChildren: children);
 
   static const String name = 'MainRoute';
 
@@ -353,11 +409,11 @@ class QrDeckImportRoute extends PageRouteInfo<QrDeckImportRouteArgs> {
     String? deckParam,
     List<PageRouteInfo>? children,
   }) : super(
-         QrDeckImportRoute.name,
-         args: QrDeckImportRouteArgs(key: key, deckParam: deckParam),
-         rawQueryParams: {'deck': deckParam},
-         initialChildren: children,
-       );
+          QrDeckImportRoute.name,
+          args: QrDeckImportRouteArgs(key: key, deckParam: deckParam),
+          rawQueryParams: {'deck': deckParam},
+          initialChildren: children,
+        );
 
   static const String name = 'QrDeckImportRoute';
 
@@ -366,9 +422,8 @@ class QrDeckImportRoute extends PageRouteInfo<QrDeckImportRouteArgs> {
     builder: (data) {
       final queryParams = data.queryParams;
       final args = data.argsAs<QrDeckImportRouteArgs>(
-        orElse:
-            () =>
-                QrDeckImportRouteArgs(deckParam: queryParams.optString('deck')),
+        orElse: () =>
+            QrDeckImportRouteArgs(deckParam: queryParams.optString('deck')),
       );
       return QrDeckImportPage(key: args.key, deckParam: args.deckParam);
     },
@@ -386,13 +441,23 @@ class QrDeckImportRouteArgs {
   String toString() {
     return 'QrDeckImportRouteArgs{key: $key, deckParam: $deckParam}';
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! QrDeckImportRouteArgs) return false;
+    return key == other.key && deckParam == other.deckParam;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ deckParam.hashCode;
 }
 
 /// generated route for
 /// [RuleInfoPage]
 class RuleInfoRoute extends PageRouteInfo<void> {
   const RuleInfoRoute({List<PageRouteInfo>? children})
-    : super(RuleInfoRoute.name, initialChildren: children);
+      : super(RuleInfoRoute.name, initialChildren: children);
 
   static const String name = 'RuleInfoRoute';
 
