@@ -52,10 +52,15 @@ class _CardScrollGridViewState extends State<CardScrollGridView> {
   }
 
   void _scrollListener() {
-    // 스크롤이 끝에서 200px 정도 남았을 때 미리 로딩 시작
-    if (_scrollController.position.pixels >= 
-        _scrollController.position.maxScrollExtent - 200 &&
-        _hasMorePages) {
+    final position = _scrollController.position;
+    final viewportHeight = position.viewportDimension;
+    final scrolledPixels = position.pixels;
+    final totalContentHeight = position.maxScrollExtent;
+
+    // 뷰포트 높이의 80% 지점에서 트리거 (화면에 보이는 영역 기준)
+    final triggerPoint = totalContentHeight - (viewportHeight * 0.8);
+
+    if (scrolledPixels >= triggerPoint && _hasMorePages) {
       _loadMoreItems();
     }
   }

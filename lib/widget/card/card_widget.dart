@@ -262,8 +262,16 @@ class _CustomCardState extends State<CustomCard> with SingleTickerProviderStateM
                               ]),
                         child: Consumer<LocaleProvider>(
                           builder: (context, localeProvider, _) {
+                            // 위젯 크기가 150px 이상이면 큰 이미지, 그 이하면 작은 이미지 사용
+                            const double imageThreshold = 150.0;
+                            final bool useLargeImage = widget.width >= imageThreshold;
+
+                            final String? imageUrl = useLargeImage
+                                ? widget.card.getDisplayImgUrl(localeProvider.localePriority)
+                                : widget.card.getDisplaySmallImgUrl(localeProvider.localePriority);
+
                             return Image.network(
-                              widget.card.getDisplaySmallImgUrl(localeProvider.localePriority) ?? '',
+                              imageUrl ?? '',
                               fit: BoxFit.fill,
                               loadingBuilder: (context, child, loadingProgress) {
                             if (loadingProgress == null) {
@@ -272,7 +280,7 @@ class _CustomCardState extends State<CustomCard> with SingleTickerProviderStateM
                             return Center(
                               child: CircularProgressIndicator(
                                 value: loadingProgress.expectedTotalBytes != null
-                                    ? loadingProgress.cumulativeBytesLoaded / 
+                                    ? loadingProgress.cumulativeBytesLoaded /
                                       loadingProgress.expectedTotalBytes!
                                     : null,
                                 strokeWidth: 2,
