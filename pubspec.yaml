@@ -41,10 +41,10 @@ dependencies:
   provider: ^6.1.1
   uni_links: ^0.5.1
   url_strategy: ^0.3.0
-  json_serializable: ^6.11.0
+  json_serializable: ^6.9.5
   build_runner: ^2.4.7
   json_annotation: ^4.9.0
-  auto_route: ^10.2.3
+  auto_route: ^9.2.3
 #  flutter_image_compress: ^2.1.0
 #  http: ^1.2.0
   stroke_text: ^1.0.0
@@ -75,7 +75,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  auto_route_generator: ^10.2.6
+  auto_route_generator: ^9.0.0
   build_runner: ^2.4.14
 
   # The "flutter_lints" package below contains a set of recommended lints to
