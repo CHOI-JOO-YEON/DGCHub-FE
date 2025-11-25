@@ -19,6 +19,7 @@ import 'package:digimon_meta_site_flutter/widget/card/builder/card_scroll_listvi
 import 'package:digimon_meta_site_flutter/widget/common/toast_overlay.dart';
 import 'package:digimon_meta_site_flutter/widget/deck/builder/deck_view_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import 'dart:html' as html;
 import 'package:digimon_meta_site_flutter/provider/note_provider.dart';
 import 'package:provider/provider.dart';
@@ -545,19 +546,28 @@ class _DeckBuilderPageState extends State<DeckBuilderPage> {
                 ),
               ),
                     // DraggableScrollableSheet으로 자연스러운 바텀시트 구현
-      DraggableScrollableSheet(
-        controller: _bottomSheetController,
-        initialChildSize: _calculateMinBottomSheetSize(constraints.maxHeight),
-        minChildSize: _calculateMinBottomSheetSize(constraints.maxHeight),
-        maxChildSize: 1.0,
-        snap: false,
-                builder: (context, scrollController) {
-                  return NotificationListener<DraggableScrollableNotification>(
-                    onNotification: (notification) {
-                      _onBottomSheetChanged(notification.extent);
-                      return true;
-                    },
-                    child: Container(
+      ScrollConfiguration(
+        behavior: ScrollConfiguration.of(context).copyWith(
+          dragDevices: {
+            PointerDeviceKind.touch,
+            PointerDeviceKind.mouse,
+            PointerDeviceKind.stylus,
+            PointerDeviceKind.trackpad,
+          },
+        ),
+        child: DraggableScrollableSheet(
+          controller: _bottomSheetController,
+          initialChildSize: _calculateMinBottomSheetSize(constraints.maxHeight),
+          minChildSize: _calculateMinBottomSheetSize(constraints.maxHeight),
+          maxChildSize: 1.0,
+          snap: false,
+                  builder: (context, scrollController) {
+                    return NotificationListener<DraggableScrollableNotification>(
+                      onNotification: (notification) {
+                        _onBottomSheetChanged(notification.extent);
+                        return true;
+                      },
+                      child: Container(
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -664,6 +674,7 @@ class _DeckBuilderPageState extends State<DeckBuilderPage> {
                   );
                 },
               ),
+            ),
             ],
           ),
         );
