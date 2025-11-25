@@ -109,6 +109,12 @@ class _CollectPageState extends State<CollectPage> {
         isOnlyEn: false,
       ));
     }
+
+    // 페이지 사이즈를 rowNumber의 배수로 설정 (12줄 분량)
+    final isPortrait = MediaQuery.orientationOf(context) == Orientation.portrait;
+    final currentRowNumber = isPortrait ? 5 : 8;
+    searchParameter.size = currentRowNumber * 12;
+
     searchParameter.page = 1;
     CardResponseDto cardResponseDto =
         await CardDataService().searchCards(searchParameter);

@@ -32,22 +32,34 @@ class CardScrollGridView extends StatefulWidget {
   State<CardScrollGridView> createState() => _CardScrollGridViewState();
 }
 
-class _CardScrollGridViewState extends State<CardScrollGridView> {
+class _CardScrollGridViewState extends State<CardScrollGridView> with SingleTickerProviderStateMixin {
   final ScrollController _scrollController = ScrollController();
   bool isLoading = false;
   final CardOverlayService _cardOverlayService = CardOverlayService();
   final Map<int, bool> _cardAddingEffects = {};
+  late AnimationController _shimmerController;
 
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_scrollListener);
+    _shimmerController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1500),
+    )..repeat();
   }
 
   void _scrollListener() {
-    // 스크롤이 끝에서 200px 정도 남았을 때 미리 로딩 시작
-    if (_scrollController.position.pixels >= 
-        _scrollController.position.maxScrollExtent - 200 &&
+    final position = _scrollController.position;
+    final viewportHeight = position.viewportDimension;
+    final scrolledPixels = position.pixels;
+    final totalContentHeight = position.maxScrollExtent;
+
+    // 뷰포트 높이의 80% 지점에서 트리거 (화면에 보이는 영역 기준)
+    // 바텀시트나 패딩과 관계없이 실제 보이는 영역 대비로 계산
+    final triggerPoint = totalContentHeight - (viewportHeight * 0.8);
+
+    if (scrolledPixels >= triggerPoint &&
         !isLoading &&
         widget.currentPage < widget.totalPages) {
       loadMoreItems();
@@ -58,15 +70,17 @@ class _CardScrollGridViewState extends State<CardScrollGridView> {
   void dispose() {
     _scrollController.removeListener(_scrollListener);
     _scrollController.dispose();
+    _shimmerController.dispose();
     super.dispose();
   }
 
   Future<void> loadMoreItems() async {
     if (isLoading || widget.loadMoreCards == null) return;
-    
+
     setState(() => isLoading = true);
-    
+
     try {
+
       await widget.loadMoreCards!(); // 실제 로딩 완료까지 기다림
     } catch (e) {
       // 에러 처리
@@ -102,37 +116,68 @@ class _CardScrollGridViewState extends State<CardScrollGridView> {
   }
 
   Widget _buildLoadingIndicator(BoxConstraints constraints) {
-    return Container(
-      height: (constraints.maxWidth / widget.rowNumber) * 1.4, // 카드와 비슷한 높이
-      margin: EdgeInsets.all(constraints.maxWidth / 100),
-      decoration: BoxDecoration(
-        color: Colors.grey[100],
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(
-            width: 24,
-            height: 24,
-            child: CircularProgressIndicator(
-              strokeWidth: 2,
-              valueColor: AlwaysStoppedAnimation<Color>(
-                Theme.of(context).primaryColor.withOpacity(0.7),
+    return AnimatedBuilder(
+      animation: _shimmerController,
+      builder: (context, child) {
+        final opacity = (0.3 + (0.2 * (1 - (_shimmerController.value * 2 - 1).abs()))).clamp(0.0, 1.0);
+
+        return Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).primaryColor.withOpacity(0.03),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: Theme.of(context).primaryColor.withOpacity(0.1),
+              width: 1,
+            ),
+          ),
+          child: Stack(
+            children: [
+              // 카드 형태 배경
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.white.withOpacity(0.8),
+                      Colors.grey[50]!.withOpacity(0.8),
+                    ],
+                  ),
+                ),
               ),
-            ),
+              // Pulse 애니메이션
+              Positioned.fill(
+                child: Opacity(
+                  opacity: opacity,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Theme.of(context).primaryColor.withOpacity(0.05),
+                          Theme.of(context).primaryColor.withOpacity(0.15),
+                          Theme.of(context).primaryColor.withOpacity(0.05),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              // 중앙 아이콘
+              Center(
+                child: Icon(
+                  Icons.image_outlined,
+                  size: 32,
+                  color: Theme.of(context).primaryColor.withOpacity(0.2),
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 8),
-          Text(
-            '로딩 중...',
-            style: TextStyle(
-              fontSize: 12,
-              color: Colors.grey[600],
-              fontFamily: 'JalnanGothic',
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 

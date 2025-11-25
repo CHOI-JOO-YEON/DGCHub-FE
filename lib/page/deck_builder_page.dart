@@ -280,10 +280,15 @@ class _DeckBuilderPageState extends State<DeckBuilderPage> {
     setState(() {
       isSearchLoading = true;
     });
-    
+
     // 페이지 번호 초기화
     searchParameter.page = 1;
-    
+
+    // 페이지 사이즈를 rowNumber의 배수로 설정 (12줄 분량)
+    final isPortrait = MediaQuery.orientationOf(context) == Orientation.portrait;
+    final currentRowNumber = isPortrait ? _deckViewRowNumber : 6;
+    searchParameter.size = currentRowNumber * 12;
+
     CardResponseDto cardResponseDto =
         await CardDataService().searchCards(searchParameter);
     cards = cardResponseDto.cards!;
@@ -291,26 +296,26 @@ class _DeckBuilderPageState extends State<DeckBuilderPage> {
     totalElements = cardResponseDto.totalElements!;
     currentPage = 1;
     searchParameter.page = 2;
-    
+
     // 검색 결과에 따른 토스트 메시지 표시
     if (cards.isEmpty) {
       ToastOverlay.show(
-        context, 
+        context,
         '검색 결과가 없습니다. 다른 조건으로 검색해보세요.',
         type: ToastType.info,
       );
     } else if (searchParameter.searchString != null && searchParameter.searchString!.isNotEmpty) {
       ToastOverlay.show(
-        context, 
+        context,
         '${totalElements}개의 카드를 찾았습니다.',
         type: ToastType.success,
       );
     }
-    
+
     setState(() {
       isSearchLoading = false;
     });
-    
+
     // 검색 파라미터 URL 업데이트
     updateSearchParameter();
   }
